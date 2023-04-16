@@ -18,5 +18,5 @@ resource "digitalocean_droplet" "lab" {
   name   = var.droplet_settings.name
   size   = var.droplet_settings.size
   tags   = [digitalocean_tag.devops.id, digitalocean_tag.user_email.id]
-  ssh_keys = [digitalocean_ssh_key.user_ssh_key.fingerprint]
+  ssh_keys = [digitalocean_ssh_key.user_ssh_key.fingerprint, data.digitalocean_ssh_key.rebrain.fingerprint]
 }
