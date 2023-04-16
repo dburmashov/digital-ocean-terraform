@@ -1,7 +1,11 @@
 digital_ocean_token = 
+aws_access_key =
+aws_secret_key =
 
 user_ssh_key_path = 
-user_email = 
+user_email =
+rebrain_user_login =  
+task_name = 
 
 droplet_settings = {
    image = 
