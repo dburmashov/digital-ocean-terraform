@@ -10,6 +10,7 @@ variable "aws_secret_key" {
   description = "aws_secret_key"
 }
 
+
 variable "user_ssh_key_path" {
   description = "user_ssh_key_path"
 }
@@ -26,6 +27,7 @@ variable "task_name" {
   description = "task_name"
 }
 
+
 variable "droplet_settings" {
   type = map(string)
   default = {
@@ -35,3 +37,7 @@ variable "droplet_settings" {
   }
 }
 
+variable "droplet_count" {
+  description = "droplet_count"
+  type = number
+}

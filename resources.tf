@@ -1,4 +1,4 @@
-resource "digitalocean_tag" "devops" {
+resource "digitalocean_tag" "module" {
   name = "devops"
 }
 
@@ -17,21 +17,19 @@ resource "digitalocean_ssh_key" "user_ssh_key" {
 
 
 resource "digitalocean_droplet" "lab" {
+  count = var.droplet_count
   image  = var.droplet_settings.image
-  name   = var.droplet_settings.name
+  name   = "${var.droplet_settings.name}-${count.index}"
   size   = var.droplet_settings.size
-  tags   = [digitalocean_tag.devops.id, digitalocean_tag.email.id, digitalocean_tag.task_name.id]
+  tags   = [digitalocean_tag.module.id, digitalocean_tag.email.id, digitalocean_tag.task_name.id]
   ssh_keys = [digitalocean_ssh_key.user_ssh_key.fingerprint, data.digitalocean_ssh_key.rebrain.fingerprint]
 }
 
-locals {
-  vps_ip = digitalocean_droplet.lab.ipv4_address
-}
-
 resource "aws_route53_record" "user_domain" {
+  count = var.droplet_count
   zone_id = data.aws_route53_zone.rebrain.zone_id
-  name = "${var.rebrain_user_login}.${data.aws_route53_zone.rebrain.name}"
+  name = "${var.rebrain_user_login}-${count.index}.${data.aws_route53_zone.rebrain.name}"
   type = "A"
   ttl = "300"
-  records = [local.vps_ip]
+  records = [element(digitalocean_droplet.lab.*.ipv4_address, count.index)]
 }
