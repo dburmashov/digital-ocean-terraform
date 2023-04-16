@@ -2,10 +2,6 @@ variable "digital_ocean_token" {
    description = "token for using api"
 }
 
-variable "rebrain_ssh_key_path" {
-   description = "rebrain_ssh_key_path"
-}
-
 variable "user_ssh_key_path" {
    description = "user_ssh_key_path"
 }
