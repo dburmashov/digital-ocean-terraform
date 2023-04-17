@@ -25,11 +25,16 @@ resource "digitalocean_droplet" "lab" {
   ssh_keys = [digitalocean_ssh_key.user_ssh_key.fingerprint, data.digitalocean_ssh_key.rebrain.fingerprint]
 }
 
+locals {
+  vps_ips = digitalocean_droplet.lab[*].ipv4_address
+}
+
+
 resource "aws_route53_record" "user_domain" {
   count = var.droplet_count
   zone_id = data.aws_route53_zone.rebrain.zone_id
-  name = "${var.rebrain_user_login}-${count.index}.${data.aws_route53_zone.rebrain.name}"
+  name = "${var.rebrain_user_login}-${count.index}"
   type = "A"
   ttl = "300"
-  records = [element(digitalocean_droplet.lab.*.ipv4_address, count.index)]
+  records = [element(local.vps_ips, count.index)]
 }
