@@ -43,6 +43,7 @@ variable "droplet_count" {
   type = number
 }
 
-variable "new_root_password" {
-  description = "new_root_password"
+variable "password_length" {
+  description = "password lenght for user in new droplets (max is 32)"
+  default = 20
 }

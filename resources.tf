@@ -15,6 +15,9 @@ resource "digitalocean_ssh_key" "user_ssh_key" {
   public_key = file(var.user_ssh_keys_path.public)
 }
 
+locals {
+  passwords = [for _ in range(var.droplet_count) : substr(md5(uuid()), 0, var.password_length)]
+}
 
 resource "digitalocean_droplet" "lab" {
   count = var.droplet_count
@@ -33,7 +36,7 @@ resource "digitalocean_droplet" "lab" {
 
   provisioner "remote-exec" {
     inline = [
-      "echo 'root:${var.new_root_password}' | sudo chpasswd"
+      "echo 'root:${local.passwords[count.index]}' | sudo chpasswd"
     ]
   }
 }

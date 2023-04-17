@@ -16,4 +16,4 @@ droplet_settings = {
    size = 
 }
 droplet_count = 
-new_root_password = 
+password_length = 
