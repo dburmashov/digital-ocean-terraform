@@ -2,7 +2,10 @@ digital_ocean_token =
 aws_access_key =
 aws_secret_key =
 
-user_ssh_key_path = 
+user_ssh_keys_path = {
+  public = 
+  private =
+}
 user_email =
 rebrain_user_login =  
 task_name = 
@@ -13,3 +16,4 @@ droplet_settings = {
    size = 
 }
 droplet_count = 
+new_root_password = 

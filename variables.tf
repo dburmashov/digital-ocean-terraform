@@ -11,8 +11,9 @@ variable "aws_secret_key" {
 }
 
 
-variable "user_ssh_key_path" {
-  description = "user_ssh_key_path"
+variable "user_ssh_keys_path" {
+  description = "user_ssh_keys_path with keys 'public', 'private'"
+  type = map(string)
 }
 
 variable "user_email" {
@@ -40,4 +41,8 @@ variable "droplet_settings" {
 variable "droplet_count" {
   description = "droplet_count"
   type = number
+}
+
+variable "new_root_password" {
+  description = "new_root_password"
 }

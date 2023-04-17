@@ -12,7 +12,7 @@ resource "digitalocean_tag" "task_name" {
 
 resource "digitalocean_ssh_key" "user_ssh_key" {
   name       = "user_ssh_key"
-  public_key = file(var.user_ssh_key_path)
+  public_key = file(var.user_ssh_keys_path.public)
 }
 
 
@@ -23,6 +23,19 @@ resource "digitalocean_droplet" "lab" {
   size   = var.droplet_settings.size
   tags   = [digitalocean_tag.module.id, digitalocean_tag.email.id, digitalocean_tag.task_name.id]
   ssh_keys = [digitalocean_ssh_key.user_ssh_key.fingerprint, data.digitalocean_ssh_key.rebrain.fingerprint]
+
+  connection {
+    type     = "ssh"
+    user     = "root"
+    private_key = file(var.user_ssh_keys_path.private)
+    host = self.ipv4_address
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'root:${var.new_root_password}' | sudo chpasswd"
+    ]
+  }
 }
 
 locals {
