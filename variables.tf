@@ -20,10 +20,6 @@ variable "user_email" {
   description = "user email in the format ii_at_rebrainme_com for ii@rebrainme.com"
 }
 
-variable "rebrain_user_login" {
-  description = "user login on platform rebrain"
-}
-
 variable "task_name" {
   description = "task_name"
 }
@@ -38,12 +34,22 @@ variable "droplet_settings" {
   }
 }
 
-variable "droplet_count" {
-  description = "droplet_count"
-  type = number
+variable "devs" {
+  type    = list(string)
+  default = ["username-lb", "username-app1", "username-app2"]
+  description = "list of devs in format USERNAME-PURPOSE"
 }
 
 variable "password_length" {
-  description = "password lenght for user in new droplets (max is 32)"
+  description = "password lenght for user in new droplets"
   default = 20
+}
+
+variable "password_special_symbols" {
+  default = "!#$%&*()-_=+[]{}<>:?"
+}
+
+
+variable "output_file_path" {
+  default = "./created-vms"
 }

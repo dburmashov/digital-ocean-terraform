@@ -1,13 +1,12 @@
 digital_ocean_token = 
-aws_access_key =
-aws_secret_key =
+aws_access_key = 
+aws_secret_key = 
 
 user_ssh_keys_path = {
   public = 
-  private =
+  private = 
 }
-user_email =
-rebrain_user_login =  
+user_email = 
 task_name = 
 
 droplet_settings = {
@@ -15,5 +14,6 @@ droplet_settings = {
    name = 
    size = 
 }
-droplet_count = 
 password_length = 
+
+devs = 

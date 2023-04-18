@@ -1,0 +1,3 @@
+%{ for vm_info in vms_info ~}
+${vm_info.number}: ${vm_info.fqdn} ${vm_info.ip} ${vm_info.password}
+%{ endfor ~}

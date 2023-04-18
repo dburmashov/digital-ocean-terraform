@@ -16,15 +16,15 @@ resource "digitalocean_ssh_key" "user_ssh_key" {
 }
 
 resource "random_password" "password" {
-  count            = var.droplet_count
+  count            = length(var.devs)
   length           = var.password_length
   special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
+  override_special = var.password_special_symbols
 }
 
 
 resource "digitalocean_droplet" "lab" {
-  count = var.droplet_count
+  count = length(var.devs)
   image  = var.droplet_settings.image
   name   = "${var.droplet_settings.name}-${count.index}"
   size   = var.droplet_settings.size
@@ -51,10 +51,24 @@ locals {
 
 
 resource "aws_route53_record" "user_domain" {
-  count = var.droplet_count
+  count = length(var.devs)
   zone_id = data.aws_route53_zone.rebrain.zone_id
-  name = "${var.rebrain_user_login}-${count.index}"
+  name = "${var.devs[count.index]}"
   type = "A"
   ttl = "300"
   records = [element(local.vps_ips, count.index)]
+}
+
+locals {
+  vms_info = [for i in range(length(var.devs)) : {
+    number = i + 1
+    fqdn = aws_route53_record.user_domain[i].fqdn
+    ip = local.vps_ips[i]
+    password = nonsensitive(random_password.password[i].result)
+  }]
+}
+
+resource "local_file" "vms_data" {
+  content  = templatefile("./list-vms.tftpl", {vms_info = local.vms_info}) 
+  filename = "${path.module}/${var.output_file_path}"
 }
